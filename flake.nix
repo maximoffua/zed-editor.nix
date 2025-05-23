@@ -15,8 +15,10 @@
       perSystem = { config, self', inputs', pkgs, system, ... }: {
         overlayAttrs = config.packages;
         packages = rec {
-            zed-editor = pkgs.callPackage ./package {};
-            default = zed-editor;
+          zed-editor-bin = pkgs.callPackage ./package/binary.nix {};
+          zed-editor-fhs = zed-editor.fhs;
+          zed-editor = pkgs.callPackage ./package {};
+          default = zed-editor;
         };
       };
       flake = {

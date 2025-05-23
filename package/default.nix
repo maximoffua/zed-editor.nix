@@ -98,7 +98,7 @@ let
 in
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "zed-editor";
-  version = "0.184.9";
+  version = "0.187.8";
 
   outputs =
     [ "out" ]
@@ -110,7 +110,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     owner = "zed-industries";
     repo = "zed";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-S+BDMyLdDf2OIQmCnqkkTGX3jnWVeH5qEaXDRoQpoDg=";
+    hash = "sha256-5bmE4QI3kmX/67O9jkEl2xstE3G+hsJ3H8gFkj146ao=";
   };
 
   patches = [
@@ -120,15 +120,22 @@ rustPlatform.buildRustPackage (finalAttrs: {
     ./0001-linux-linker.patch
   ];
 
+  cargoPatches = [./0002-remove-cargo-deps.patch];
+
   postPatch =
     # Dynamically link WebRTC instead of static
     ''
       substituteInPlace $cargoDepsCopy/webrtc-sys-*/build.rs \
         --replace-fail "cargo:rustc-link-lib=static=webrtc" "cargo:rustc-link-lib=dylib=webrtc"
+
+      # Zed team renamed the function but forgot to update its usage in this file
+      # We rename it ourselves for now, until upstream fixes the issue
+      substituteInPlace $cargoDepsCopy/reqwest-0.12*/src/blocking/client.rs \
+        --replace-fail "inner.redirect(policy)" "inner.redirect_policy(policy)"
     '';
 
   useFetchCargoVendor = true;
-  cargoHash = "sha256-u6yU78VkLXpq4CSQDUszTSpn5lZyxg3gAuVWM4Adz/A=";
+  cargoHash = "sha256-Sz1+aYjWBatmTASdf/yk9AJu0V/giJsujnffk9mZsgE=";
 
   nativeBuildInputs =
     [
