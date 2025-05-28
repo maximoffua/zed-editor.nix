@@ -97,7 +97,7 @@ assert withGLES -> stdenv.hostPlatform.isLinux; let
 in
   rustPlatform.buildRustPackage (finalAttrs: {
     pname = "zed-editor";
-    version = "0.187.8";
+    version = "0.188.3";
 
     outputs =
       ["out"]
@@ -109,14 +109,14 @@ in
       owner = "zed-industries";
       repo = "zed";
       tag = "v${finalAttrs.version}";
-      hash = "sha256-5bmE4QI3kmX/67O9jkEl2xstE3G+hsJ3H8gFkj146ao=";
+      hash = "sha256-ZyKFzb6/kVw/uLTmhnyrwmgyTHTwgu/WbOga409eZvg=";
     };
 
     patches = [
       # Upstream delegates linking on Linux to clang to make use of mold,
       # but builds fine with our standard linker.
       # This patch removes their linker override from the cargo config.
-      ./0001-linux-linker.patch
+      ./0002-linux-linker.patch
     ];
 
     cargoPatches = [./0002-remove-cargo-deps.patch];
@@ -134,7 +134,7 @@ in
       '';
 
     useFetchCargoVendor = true;
-    cargoHash = "sha256-Sz1+aYjWBatmTASdf/yk9AJu0V/giJsujnffk9mZsgE=";
+    cargoHash = "sha256-0Nwdw20YdezGvUCkFw6ZV55qsebIhtnIoPoHd4tgIyA=";
 
     nativeBuildInputs =
       [
