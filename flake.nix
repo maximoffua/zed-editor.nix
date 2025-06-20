@@ -21,16 +21,21 @@
           rustPackages.latest.cargo
           rustPackages.latest.rustc
         ];
+        rustLatest = pkgs.makeRustPlatform {
+          inherit (rustPackages.latest) rustc cargo;
+        };
       in {
         overlayAttrs = config.packages;
         packages = rec {
+          rustc = rustPackages.latest.rustc;
           default = zed-editor;
-          zed-editor = pkgs.callPackage ./package {};
+          zed-editor = pkgs.callPackage ./package { rustPlatform = rustLatest; };
           zed-editor-bin = pkgs.callPackage ./package/binary.nix {};
           zed-editor-fhs = zed-editor.fhs;
           zed-editor-dev = zed-editor.fhsWithPackages (_: [rustWasm pkgs.node]);
           zed-editor-pre = pkgs.callPackage ./package/pre-release.nix {
             inherit rustWasm;
+            rustPlatform = rustLatest;
             supportCustomExtensions = true;
           };
         };
