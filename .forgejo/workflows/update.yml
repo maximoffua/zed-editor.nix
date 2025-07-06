@@ -5,11 +5,11 @@ on:
     - cron: "0 10 * * 0" # https://crontab.guru/#0_10_*_*_0
 jobs:
   update-packages:
-    runs-on: nixos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      # - name: Install Nix
-      #   uses: cachix/install-nix-action@v31
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
       - name: Update flake packages
         uses: selfuryon/nix-update-action@main
