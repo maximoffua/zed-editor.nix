@@ -14,16 +14,17 @@
         inputs.flake-parts.flakeModules.easyOverlay
       ];
       systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
-      perSystem = { config, self', inputs', pkgs, system, ... }: let
+      perSystem = { config, inputs', pkgs, ... }: let
         rustPackages = inputs'.fenix.packages;
         rustWasm = rustPackages.combine [
           rustPackages.targets.wasm32-wasip1.latest.rust-std
           rustPackages.latest.cargo
           rustPackages.latest.rustc
         ];
-        rustLatest = pkgs.makeRustPlatform {
-          inherit (rustPackages.latest) rustc cargo;
-        };
+        # rustLatest = pkgs.makeRustPlatform {
+        #   inherit (rustPackages.latest) rustc cargo;
+        # };
+        rustLatest = pkgs.rustPlatform;
       in {
         overlayAttrs = config.packages;
         packages = rec {
