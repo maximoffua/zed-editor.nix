@@ -11,6 +11,13 @@ jobs:
         uses: actions/checkout@v4
       - name: Install Nix
         uses: cachix/install-nix-action@v31
+      - name: Enable cachix
+        uses: cachix/cachix-action@v15
+        with:
+          name: mtech
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+          pushFilter: >
+            (-source$ | nixpkgs\.tar\.gz$)
       - name: Update flake packages
         run: |
           export GIT_AUTHOR_NAME=runner[ci]
