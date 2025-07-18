@@ -13,17 +13,16 @@
       ];
       systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
       perSystem = { config, pkgs, ... }: let
-        rustLatest = pkgs.rustPlatform;
+        # rustLatest = pkgs.rustPlatform;
       in {
         overlayAttrs = config.packages;
         packages = rec {
           default = zed-editor;
-          zed-editor = pkgs.callPackage ./package { rustPlatform = rustLatest; };
+          zed-editor = pkgs.callPackage ./package { };
           zed-editor-bin = pkgs.callPackage ./package/binary.nix {};
           zed-editor-fhs = zed-editor.fhs;
           zed-editor-dev = zed-editor.fhsWithPackages (_: [pkgs.node]);
           zed-editor-pre = pkgs.callPackage ./package/pre-release.nix {
-            rustPlatform = rustLatest;
             supportCustomExtensions = true;
           };
         };

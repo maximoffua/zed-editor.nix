@@ -97,7 +97,7 @@ assert withGLES -> stdenv.hostPlatform.isLinux; let
 in
   rustPlatform.buildRustPackage (finalAttrs: {
     pname = "zed-editor";
-    version = "0.192.7";
+    version = "0.195.4";
 
     outputs =
       ["out"]
@@ -109,17 +109,19 @@ in
       owner = "zed-industries";
       repo = "zed";
       tag = "v${finalAttrs.version}";
-      hash = "sha256-OjqJAb7IlFpSd7+i5QAkpsBDAbM6tZ8x/Y1HWiyDkPI=";
+      hash = "sha256-Vqv1b5JWDbPwCntP5wjaDk3FdEOhUXDZXv7ABIj/ixo=";
     };
 
     patches = [
       # Upstream delegates linking on Linux to clang to make use of mold,
       # but builds fine with our standard linker.
       # This patch removes their linker override from the cargo config.
-      ./0002-linux-linker.patch
+      ./0001-linux-linker.patch
     ];
 
-    cargoPatches = [./0002-remove-cargo-deps.patch];
+    cargoPatches = [
+      ./0002-fix-duplicate-reqwest.patch
+    ];
 
     postPatch =
       # Dynamically link WebRTC instead of static
@@ -134,7 +136,7 @@ in
       '';
 
     useFetchCargoVendor = true;
-    cargoHash = "sha256-qi3V6qGbb6kKecSTCbDMqfUKdgIliBJG1RaI5v+W9yY=";
+    cargoHash = "sha256-x245SqGOXM9Mxp/5ddVFakdy5R7yF0TNxMjzknA35vE=";
 
     nativeBuildInputs =
       [
@@ -309,7 +311,7 @@ in
       updateScript = nix-update-script {
         extraArgs = [
           "--version-regex"
-          "^v(\d+\.\d+\.\d+)$"
+          "^v([.0-9]+)$"
         ];
       };
       fhs = fhs {zed-editor = finalAttrs.finalPackage;};
