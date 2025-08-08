@@ -18,7 +18,7 @@
   testers,
   lib,
 }: let
-  version = "0.198.2";
+  version = "0.198.4";
 
   # Map from Nix system → { url, sha256, type }
   assets = {
@@ -26,7 +26,7 @@
       url =
         "https://github.com/zed-industries/zed/releases/download/"
         + "v${version}/zed-linux-x86_64.tar.gz";
-      sha256 = "sha256-oLBfbmhs6rMNqOyw7iKQzD+BH3i2ndCF5nZFHfOQ3VA=";
+      sha256 = "sha256-vDLrUZigC60Inl+v26pqHyfTmzxTXqdHKUZ2WgnEQG0=";
       type = "tar.gz";
     };
     "aarch64-linux" = {
